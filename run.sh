@@ -30,7 +30,7 @@ touch v2ray-mu.log
 cd ..
 echo "All Logs Clear!"
 
-source mu.conf
+source ./mu.conf
 export MU_URI=$MU_URI
 export MU_TOKEN=$MU_TOKEN
 export MU_NODE_ID=$NodeId

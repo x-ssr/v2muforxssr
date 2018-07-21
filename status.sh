@@ -9,7 +9,7 @@ then
 	exit
 fi
 status=`curl $MU_URI\/nodes\/$NodeId\/status -s`
-if [ status == "Offline" ]
+if [ "$status" == "Offline" ]
 then
 	./run.sh
 	echo "`date`: Auto Restart/Start V2ray Service" >> log/auto_restart.log

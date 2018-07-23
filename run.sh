@@ -42,7 +42,7 @@ sed -i "11c \ \ \ \ \"port\": $NodePort," cfg.json
 sed -i "17c \ \ \ \ \ \ \"network\": \"$NetWork\"," cfg.json
 sed -i "19c \ \ \ \ \ \ \"security\": \"$SecuritySetting\"," cfg.json
 sed -i "21c \ \ \ \ \ \ \ \ \"serverName\": \"$Domain\"," cfg.json
-sed -i "22c \ \ \ \ \ \ \ \ \"allowInsecure\": \"$AllowInsecure\"," cfg.json
+sed -i "22c \ \ \ \ \ \ \ \ \"allowInsecure\": $AllowInsecure," cfg.json
 sed -i "29c \ \ \ \ \ \ \ \ \ \ \ \ \"certificateFile\": \"$CertificateFile\"," cfg.json
 sed -i "30c \ \ \ \ \ \ \ \ \ \ \ \ \"keyFile\": \"$KeyFile\"" cfg.json
 sed -i "44c \ \ \ \ \ \ \ \ \ \ \"type\": \"$ObfsType\"" cfg.json

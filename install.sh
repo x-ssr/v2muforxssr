@@ -32,6 +32,7 @@ echo $mu_uri
 echo 'Your Mu-api KEY:'
 echo $mu_key
 echo 'Is it OK?(y/n)'
+isok=n
 read isok
 if [ $isok != 'y' -a $isok != 'Y' ];
 then 
@@ -42,25 +43,50 @@ echo '-------------------------------'
 echo '|        Installing...        |'
 echo '-------------------------------'
 yum install unzip -y
-yum -y install vixie-cron
 yum install crontabs -y
 chkconfig --level 35 crond on
 service crond start
-wget https://github.com/v2ray/v2ray-core/releases/download/v3.29/v2ray-linux-64.zip
+clear
+echo -e '\033[35m ______________'
+echo ' |     XX     |'
+echo ' -----|  |-----'
+echo '      |  |'
+echo '      |  |'
+echo '      |  |'
+echo '      |  |'
+echo '      |  |'
+echo -e '      |--|\033[0m'
+echo 'Getting Latest Version...'
+v2Version=`wget -q -O - https://api.github.com/repos/v2ray/v2ray-core/releases/latest | grep '"tag_name":'| awk '{printf $2}'`
+ctlVersion=`wget -q -O - https://api.github.com/repos/tonychanczm/easy-v2ray-mu/releases/latest | grep '"tag_name":'| awk '{printf $2}'`
+ctlVersion=${ctlVersion%\"*}
+ctlVersion=${ctlVersion#\"*}
+v2Version=${v2Version%\"*}
+v2Version=${v2Version#\"*}
+shellsVersion=`curl https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/version.txt -s`
+echo -e "\033[33m Shells Version:\033[32m $shellsVersion\033[0m"
+echo -e "\033[33m V2ray Version :\033[32m $v2Version\033[0m"
+echo -e "\033[33m Muctl Version :\033[32m $ctlVersion\033[0m"
+sleep 1
+
+wget -O v2ray-linux-64.zip https://github.com/v2ray/v2ray-core/releases/download/$v2Version/v2ray-linux-64.zip
 unzip v2ray-linux-64.zip
 rm -rf v2ray-linux-64.zip
-mv v2ray-v3.29-linux-64 v2ray-mu
+mv v2ray-$v2Version-linux-64 v2ray-mu
 cd v2ray-mu
 mkdir log
 touch log/error.log
 touch log/access.log
 touch log/v2ray-mu.log
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/cfg.json
-wget https://github.com/tonychanczm/easy-v2ray-mu/releases/download/v1.1/v2mctl
+wget https://github.com/tonychanczm/easy-v2ray-mu/releases/download/$ctlVersion/v2mctl
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/mu.conf
 sed -i "s;##mu_uri##;$mu_uri;g" mu.conf
 sed -i "s;##mu_key##;$mu_key;g" mu.conf
 sed -i "s;##node_id##;$node_id;g" mu.conf
+sed -i "s;##ShVersion##;$shellsVersion;g" mu.conf
+sed -i "s;##V2Version##;$v2Version;g" mu.conf
+sed -i "s;##CtlVersion##;$ctlVersion;g" mu.conf
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/run.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/stop.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/cleanLogs.sh
@@ -70,8 +96,8 @@ chmod +x *
 echo "30 4 * * * cd $(readlink -f .) && ./run.sh">> /var/spool/cron/root
 echo "* * * * * cd $(readlink -f .) && ./status.sh">> /var/spool/cron/root
 echo '--------------------------------'
-echo '|       Install finshed        |'
-echo '|please run this command to run|'
-echo '----------- V  V  V ------------'
-echo "cd $(readlink -f .) && ./run.sh"
+echo -e '|       \033[33mInstall finshed\033[0m        |'
+echo -e '|\033[32mplease run this command to run\033[0m|'
+echo -e '-----------\033[33m V  V  V \033[0m------------'
+echo -e "\033[32mcd $(readlink -f .) && ./run.sh\033[0m"
 

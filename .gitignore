@@ -1,1 +1,5 @@
 v2ray-mu
+.DS_Store
+.phpstorm.meta.php
+*.log
+/.idea

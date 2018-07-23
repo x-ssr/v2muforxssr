@@ -6,8 +6,7 @@
     ],
     "tag": "api"
   },
-  "stats": {
-  },
+  "stats": {},
   "inbound": {
     "port": 8300,
     "protocol": "vmess",
@@ -15,19 +14,51 @@
       "clients": []
     },
     "streamSettings": {
-      "network": "ws"
+      "network": "ws",
+
+      "security": "none",
+      "tlsSettings": {
+        "serverName": "v2ray.com",
+        "allowInsecure": false,
+        "alpn": [
+          "http/1.1"
+        ],
+        "certificates": [
+          {
+            "usage": "encipherment",
+            "certificateFile": "/path/to/certificate.crt",
+            "keyFile": "/path/to/key.key"
+          }
+        ]
+      },
+
+      "kcpSettings": {
+        "mtu": 1350,
+        "tti": 20,
+        "uplinkCapacity": 5,
+        "downlinkCapacity": 20,
+        "congestion": true,
+        "readBufferSize": 1,
+        "writeBufferSize": 1,
+        "header": {
+          "type": "none"
+        }
+      }
     },
+
     "tag": "proxy"
   },
-  "inboundDetour": [{
-    "listen": "127.0.0.1",
-    "port": 8301,
-    "protocol": "dokodemo-door",
-    "settings": {
-      "address": "0.0.0.0"
-    },
-    "tag": "api"
-  }],
+  "inboundDetour": [
+    {
+      "listen": "127.0.0.1",
+      "port": 8301,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "0.0.0.0"
+      },
+      "tag": "api"
+    }
+  ],
   "log": {
     "loglevel": "warning",
     "access": "log/access.log",
@@ -39,13 +70,15 @@
   },
   "routing": {
     "settings": {
-      "rules": [{
-        "inboundTag": [
-          "api"
-        ],
-        "outboundTag": "api",
-        "type": "field"
-      }]
+      "rules": [
+        {
+          "inboundTag": [
+            "api"
+          ],
+          "outboundTag": "api",
+          "type": "field"
+        }
+      ]
     },
     "strategy": "rules"
   },
@@ -57,7 +90,17 @@
         "uplinkOnly": 5,
         "downlinkOnly": 30,
         "statsUserUplink": true,
-        "statsUserDownlink": true
+        "statsUserDownlink": true,
+        "bufferSize": 50
+      },
+      "0": {
+        "handshake": 4,
+        "connIdle": 300,
+        "uplinkOnly": 5,
+        "downlinkOnly": 30,
+        "statsUserUplink": true,
+        "statsUserDownlink": true,
+        "bufferSize": 50
       }
     }
   }

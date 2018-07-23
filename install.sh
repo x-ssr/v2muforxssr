@@ -92,6 +92,7 @@ wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/stop.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/cleanLogs.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/catLogs.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/status.sh
+wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/update.sh
 chmod +x *
 echo "30 4 * * * cd $(readlink -f .) && ./run.sh">> /var/spool/cron/root
 echo "* * * * * cd $(readlink -f .) && ./status.sh">> /var/spool/cron/root

@@ -15,7 +15,6 @@
     },
     "streamSettings": {
       "network": "ws",
-
       "security": "none",
       "tlsSettings": {
         "serverName": "v2ray.com",

@@ -7,10 +7,16 @@ if [ $update_pid ]; then
     exit
 fi
 source ./mu.conf
-if [ ! $v2ray_pid -o ! $v2muctl_pid ]
+if [ ! $v2ray_pid ]
 then
 	./run.sh
 	echo "`date`: Auto Restart/Start V2ray Service" >> log/auto_restart.log
+	exit
+fi
+if [ ! $v2muctl_pid ]
+then
+	./run.sh
+	echo "`date`: Auto Restart/Start V2muctl Service" >> log/auto_restart.log
 	exit
 fi
 status=`curl $MU_URI\/nodes\/$NodeId\/status -s`

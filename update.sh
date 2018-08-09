@@ -7,10 +7,8 @@ ctlVersion=${ctlVersion#\"*}
 v2Version=${v2Version%\"*}
 v2Version=${v2Version#\"*}
 source ./mu.conf
-if [ "$shellsVersion" == "$ShVersion" ]; then
-    echo 'Nothing to do, shells version is up to date'
-else
-    echo 'Updating shells...'
+if [ "$shellsVersion" != "$ShVersion" ]; then
+    echo "`date` : Updating shells..." >> log/update_log.log
     wget -O run.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/run.sh
     wget -O stop.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/stop.sh
     wget -O cleanLogs.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/cleanLogs.sh
@@ -19,12 +17,10 @@ else
     wget -O update.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/update.sh
     chmod +x *
     sed -i "44c ShVersion='$shellsVersion'" mu.conf
-    echo "Shells Updated to $shellsVersion"
+    echo "`date` : Shells Updated to $shellsVersion" >> log/update_log.log
 fi
-if [ "$v2Version" == "$V2Version" ]; then
-    echo 'Nothing to do, v2ray version is up to date'
-else
-    echo 'Updating v2ray...'
+if [ "$v2Version" != "$V2Version" ]; then
+    echo "`date` : Updating v2ray..." >> log/update_log.log
     wget -O v2ray-linux-64.zip https://github.com/v2ray/v2ray-core/releases/download/$v2Version/v2ray-linux-64.zip
     unzip v2ray-linux-64.zip
     rm -rf v2ray-linux-64.zip
@@ -32,14 +28,12 @@ else
     rm -rf v2ray-$v2Version-linux-64
     chmod +x *
     sed -i "45c V2Version='$v2Version'" mu.conf
-    echo "V2ray Updated to $v2Version"
+    echo "`date` : V2ray Updated to $v2Version" >> log/update_log.log
 fi
-if [ "$ctlVersion" == "$CtlVersion" ]; then
-    echo 'Nothing to do, v2mctl version is up to date'
-else
-    echo 'Updating v2mctl...'
+if [ "$ctlVersion" != "$CtlVersion" ]; then
+    echo "`date` : Updating v2mctl..." >> log/update_log.log
     wget -O v2mctl https://github.com/tonychanczm/easy-v2ray-mu/releases/download/$ctlVersion/v2mctl
     chmod +x *
     sed -i "46c CtlVersion='$ctlVersion'" mu.conf
-    echo "v2mctl Updated to $ctlVersion"
+    echo "`date` : v2mctl Updated to $ctlVersion" >> log/update_log.log
 fi

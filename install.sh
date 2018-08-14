@@ -47,15 +47,7 @@ yum install crontabs -y
 chkconfig --level 35 crond on
 service crond start
 clear
-echo -e '\033[35m ______________'
-echo ' |     XX     |'
-echo ' -----|  |-----'
-echo '      |  |'
-echo '      |  |'
-echo '      |  |'
-echo '      |  |'
-echo '      |  |'
-echo -e '      |--|\033[0m'
+echo -e "\033[33m ____            _  __     __\n|  _ \ _ __ ___ (_) \ \   / /\n| |_) | '__/ _ \| |  \ \ / / \n|  __/| | | (_) | |   \ V /  \n|_|   |_|  \___// |    \_/ \033[5mInstaling...\033[0m\033[33m  \n              |__/          for Mu_api\n\033[0m"
 echo 'Getting Latest Version...'
 v2Version=`wget -q -O - https://api.github.com/repos/v2ray/v2ray-core/releases/latest | grep '"tag_name":'| awk '{printf $2}'`
 ctlVersion=`wget -q -O - https://api.github.com/repos/tonychanczm/easy-v2ray-mu/releases/latest | grep '"tag_name":'| awk '{printf $2}'`
@@ -63,12 +55,12 @@ ctlVersion=${ctlVersion%\"*}
 ctlVersion=${ctlVersion#\"*}
 v2Version=${v2Version%\"*}
 v2Version=${v2Version#\"*}
-shellsVersion=`curl https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/version.txt -s`
+shellsVersion=`wget -q -O - https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/version.txt | grep 'ver:'| awk '{printf $2}'`
 echo -e "\033[33m Shells Version:\033[32m $shellsVersion\033[0m"
 echo -e "\033[33m V2ray Version :\033[32m $v2Version\033[0m"
 echo -e "\033[33m Muctl Version :\033[32m $ctlVersion\033[0m"
 sleep 1
-
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 wget -O v2ray-linux-64.zip https://github.com/v2ray/v2ray-core/releases/download/$v2Version/v2ray-linux-64.zip
 unzip v2ray-linux-64.zip
 rm -rf v2ray-linux-64.zip
@@ -94,8 +86,15 @@ wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/catLogs.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/status.sh
 wget https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/update.sh
 chmod +x *
-echo "30 4 * * * cd $(readlink -f .) && ./run.sh">> /var/spool/cron/root
-echo "* * * * * cd $(readlink -f .) && ./status.sh">> /var/spool/cron/root
+thisPath=$(readlink -f .)
+isCronRunsh=`grep "&& ./run.sh" /var/spool/cron/root|awk '{printf $7}'`
+isCronStatsh=`grep "&& ./status.sh" /var/spool/cron/root|awk '{printf $7}'`
+if [ "$isCronRunsh" != "$thisPath" ]; then
+    echo "30 4 * * * cd $(readlink -f .) && ./run.sh">> /var/spool/cron/root
+fi
+if [ "$isCronRunsh" != "$thisPath" ]; then
+    echo "* * * * * cd $(readlink -f .) && ./status.sh">> /var/spool/cron/root
+fi
 echo '--------------------------------'
 echo -e '|       \033[33mInstall finshed\033[0m        |'
 echo -e '|\033[32mplease run this command to run\033[0m|'

@@ -3,7 +3,7 @@ update_pid=$(ps ux | grep "./update.sh" | grep -v grep | awk '{print $2}')
 v2ray_pid=$(ps ux | grep "$(readlink -f v2ray)" | grep -v grep | awk '{print $2}')
 v2muctl_pid=$(ps ux | grep "$(readlink -f v2mctl)" | grep -v grep | awk '{print $2}')
 if [ $update_pid ]; then
-    echo "`date`: Updating" >> log/auto_restart.log
+    echo "`date`: Updating, skip status check." >> log/auto_restart.log
     exit
 fi
 source ./mu.conf

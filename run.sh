@@ -48,8 +48,9 @@ sed -i "30c \ \ \ \ \ \ \ \ \ \ \ \ \"keyFile\": \"$KeyFile\"" cfg.json
 sed -i "44c \ \ \ \ \ \ \ \ \ \ \"type\": \"$ObfsType\"" cfg.json
 
 nohup $(readlink -f v2ray) --config=$(readlink -f cfg.json)>> /dev/null 2>&1 &
+echo 'Preparing...'
+sleep 3
 nohup $(readlink -f v2mctl)>> /dev/null 2>&1 &
-
 sleep 1
 
 v2ray_pid=$(ps ux | grep "$(readlink -f v2ray)" | grep -v grep | awk '{print $2}')
@@ -57,14 +58,14 @@ v2muctl_pid=$(ps ux | grep "$(readlink -f v2mctl)" | grep -v grep | awk '{print 
 
 if [ ! $v2ray_pid ];
 then
-    echo '***Fail to start V2Ray***'
+    echo -e "\033[31m***Fail to start V2Ray***\033[0m"
 else
-    echo 'Success to start V2Ray (pid:'$v2ray_pid')'
+    echo -e "\033[32mSuccess to start V2Ray (pid:'$v2ray_pid')\033[0m"
 fi
 
 if [ ! $v2muctl_pid ];
 then
-echo '***Fail to start V2Ray-mu Manager***'
+echo -e "\033[31m***Fail to start V2Ray-mu Manager***\033[0m"
 else
-echo 'Success to start V2Ray-mu Manager (pid:'$v2muctl_pid')'
+echo -e "\033[32mSuccess to start V2Ray-mu Manager (pid:'$v2muctl_pid')\033[0m"
 fi

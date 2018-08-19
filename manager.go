@@ -3,6 +3,8 @@ package main
 import (
 	"time"
 	"errors"
+	"crypto/md5"
+
 
 	"github.com/catpie/musdk-go"
 	"github.com/orvice/v2ray-manager"
@@ -67,8 +69,9 @@ func (u *UserManager) restartUser() {}
 
 func (u *UserManager) Run() error {
 	for {
-		u.saveTrafficDaemon()
 		u.postNodeInfo()
+		time.Sleep(1)
+		u.saveTrafficDaemon()
 		u.check()
 		time.Sleep(cfg.SyncTime)
 	}
@@ -111,9 +114,19 @@ func (u *UserManager) PostNodeInfo() error {
 	if err != nil {
 		load = "- - -"
 	} else {
-	load = load[0:13]
+	load = load[0:14]
 	}
 	data := `{"load":"`+load+`","uptime":"`+uptime+`"}`
+	originDataByte := []byte(data)
+	originDataHas := md5.Sum(originDataByte)
+	originDataMd5 := fmt.Sprintf("%x", originDataHas)
+	sigstr := originDataMd5 + cfg.WebApi.Sigkey
+	sigByte := []byte(sigstr)
+	sigHas := md5.Sum(sigByte)
+	sig := fmt.Sprintf("%x", sigHas)
+	data = `{"load":"`+load+`","uptime":"`+uptime+`","sig":"`+sig+`"}`
+
+
 	_, statusCode, err := u.httpPost(u.postNodeInfoUri(), string(data))
 	if err != nil {
 		return err

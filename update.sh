@@ -10,12 +10,17 @@ source ./mu.conf
 if [ "$shellsVersion" != "" ]; then
     if [ "$shellsVersion" != "$ShVersion" ]; then
         echo "`date` : Updating shells..." >> log/update_log.log
+        mkdir updatetmp
+        cd updatetmp
         wget -O run.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/run.sh
         wget -O stop.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/stop.sh
         wget -O cleanLogs.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/cleanLogs.sh
         wget -O catLogs.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/catLogs.sh
         wget -O status.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/status.sh
         wget -O update.sh https://raw.githubusercontent.com/tonychanczm/easy-v2ray-mu/dev/update.sh
+        cd ..
+        \cp -r -f updatetmp/* ./
+        rm -rf updatetmp
         chmod +x *
         sed -i "44c ShVersion='$shellsVersion'" mu.conf
         echo "`date` : Shells Updated to $shellsVersion" >> log/update_log.log
@@ -38,7 +43,12 @@ fi
 if [ "$ctlVersion" != "" ]; then
     if [ "$ctlVersion" != "$CtlVersion" ]; then
         echo "`date` : Updating v2mctl..." >> log/update_log.log
+        mkdir updatetmp
+        cd updatetmp
         wget -O v2mctl https://github.com/tonychanczm/easy-v2ray-mu/releases/download/$ctlVersion/v2mctl
+        cd ..
+        \cp -r -f updatetmp/* ./
+        rm -rf updatetmp
         chmod +x *
         sed -i "46c CtlVersion='$ctlVersion'" mu.conf
         echo "`date` : v2mctl Updated to $ctlVersion" >> log/update_log.log

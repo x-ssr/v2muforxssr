@@ -37,20 +37,20 @@ func (u *UserManager) check() error {
 func (u *UserManager) checkUser(user musdk.User) error {
 	var err error
 	if user.IsEnable() && !u.Exist(user) {
-		logger.Infof("Run user id %d uuid %s", user.Id, user.V2rayUser.UUID)
+		logger.Infof("Run user id %d", user.Id)
 		// run user
 		err = u.vm.AddUser(&user.V2rayUser)
 		if err != nil {
-			logger.Errorf("Add user %s error %v", user.V2rayUser.UUID, err)
+			logger.Errorf("Add user %d error: %v", user.Id, err)
 			return err
 		}
-		logger.Infof("Add user success %s", user.V2rayUser.UUID)
+		logger.Infof("Add user %d success", user.Id)
 		u.AddUser(user)
 		return nil
 	}
 
 	if !user.IsEnable() && u.Exist(user) {
-		logger.Infof("Stop user id %d uuid %s", user.Id, user.V2rayUser.UUID)
+		logger.Infof("Stop user id %d ", user.Id)
 		// stop user
 		err = u.vm.RemoveUser(&user.V2rayUser)
 

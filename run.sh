@@ -1,9 +1,9 @@
 #!/bin/bash
 v2ray_realpath=$(readlink -f v2ray)
 cfg_realpath=$(readlink -f cfg.json)
-v2muctl_realpath=$(readlink -f v2mctl)
+v2muctl_realpath=$(readlink -f v2muforxssr)
 v2ray_pid=$(ps ux | grep "$(readlink -f v2ray)" | grep -v grep | awk '{print $2}')
-v2muctl_pid=$(ps ux | grep "$(readlink -f v2mctl)" | grep -v grep | awk '{print $2}')
+v2muctl_pid=$(ps ux | grep "$(readlink -f v2muforxssr)" | grep -v grep | awk '{print $2}')
 if [ ! $v2ray_pid ];
 then
     echo 'Starting V2Ray'
@@ -50,11 +50,11 @@ sed -i "44c \ \ \ \ \ \ \ \ \ \ \"type\": \"$ObfsType\"" cfg.json
 nohup $(readlink -f v2ray) --config=$(readlink -f cfg.json)>> /dev/null 2>&1 &
 echo 'Preparing...'
 sleep 3
-nohup $(readlink -f v2mctl)>> /dev/null 2>&1 &
+nohup $(readlink -f v2muforxssr)>> /dev/null 2>&1 &
 sleep 1
 
 v2ray_pid=$(ps ux | grep "$(readlink -f v2ray)" | grep -v grep | awk '{print $2}')
-v2muctl_pid=$(ps ux | grep "$(readlink -f v2mctl)" | grep -v grep | awk '{print $2}')
+v2muctl_pid=$(ps ux | grep "$(readlink -f v2muforxssr)" | grep -v grep | awk '{print $2}')
 
 if [ ! $v2ray_pid ];
 then

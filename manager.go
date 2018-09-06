@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"time"
 	"errors"
 	"crypto/md5"
@@ -116,7 +117,8 @@ func (u *UserManager) PostNodeInfo() error {
 	} else {
 	load = load[0:14]
 	}
-	orginData := `{"load":"`+load+`","uptime":"`+uptime+`"}`
+	timenow := time.Now().Unix()
+	orginData := `{"load":"`+load+`","uptime":"`+uptime+`","time":"`+strconv.FormatInt(timenow,10)+`"}`
 	originDataByte := []byte(orginData)
 	originDataHas := md5.Sum(originDataByte)
 	originDataMd5 := fmt.Sprintf("%x", originDataHas)
@@ -124,7 +126,7 @@ func (u *UserManager) PostNodeInfo() error {
 	sigByte := []byte(sigstr)
 	sigHas := md5.Sum(sigByte)
 	sig := fmt.Sprintf("%x", sigHas)
-	data := `{"load":"`+load+`","uptime":"`+uptime+`","sig":"`+sig+`"}`
+	data := `{"load":"`+load+`","uptime":"`+uptime+`","time":"`+strconv.FormatInt(timenow,10)+`","sig":"`+sig+`"}`
 
 
 	_, statusCode, err := u.httpPost(u.postNodeInfoUri(), string(data))

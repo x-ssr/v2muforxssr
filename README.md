@@ -8,4 +8,4 @@
 
 ## ONE KEY INSTALL  
 ### eg:  
-`yum install wget -y && wget -O install.sh https://raw.githubusercontent.com/x-ssr/v2muforxssr/dev/install.sh 10`
+`yum install wget -y && wget -O install.sh https://raw.githubusercontent.com/x-ssr/v2muforxssr/dev/install.sh && sh install.sh 10`

@@ -23,7 +23,7 @@ func (u *UserManager) check() error {
 	logger.Info("Checking users from mu...")
 	users, err := apiClient.GetUsers()
 	if err != nil {
-		logger.Errorf("Get users from error: %v", err)
+		logger.Errorf("Get users from error")
 		return err
 	}
 	logger.Infof("Get %d users from mu", len(users))
@@ -41,7 +41,7 @@ func (u *UserManager) checkUser(user musdk.User) error {
 		// run user
 		err = u.vm.AddUser(&user.V2rayUser)
 		if err != nil {
-			logger.Errorf("Add user %d error: %v", user.Id, err)
+			logger.Errorf("Add user %d error", user.Id)
 			return err
 		}
 		logger.Infof("Add user %d success", user.Id)
@@ -55,7 +55,7 @@ func (u *UserManager) checkUser(user musdk.User) error {
 		err = u.vm.RemoveUser(&user.V2rayUser)
 
 		if err != nil {
-			logger.Errorf("Remove user error %v", err)
+			logger.Errorf("Remove user error")
 			time.Sleep(time.Second * 10)
 			return err
 		}
@@ -96,7 +96,7 @@ func (u *UserManager) postNodeInfo() error {
 	logger.Infof("Posting node info...")
 	err := u.PostNodeInfo()
 	if err != nil {
-		logger.Errorf("Post node info error %v", err)
+		logger.Errorf("Post node info error")
 	}
 	return nil
 }

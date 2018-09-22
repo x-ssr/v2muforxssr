@@ -1,0 +1,30 @@
+{
+  "inbound": {  // 为了不影响正常使用，主入口协议依然使用 SOCKS。
+    "protocol": "dokodemo-door",  // 一个额外的入口协议
+    "port": 18320,  // 本地端口
+    "settings": {
+      "address": "35.177.40.8",  // 远程机器的 IP
+      "port": 8300,          // 远程机器的端口
+      "network": "tcp",      // 网络协议，支持"tcp"、"udp"和"tcp,udp"
+      "timeout": 0           // 传输超时（秒），0 表示不检测超时
+    }
+  },
+  "outbound": {
+    "sendThrough": "0.0.0.0",
+    "protocol": "freedom",
+    "settings": {},
+    "tag": "标识",
+    "streamSettings": {
+
+      "domainStrategy": "AsIs",
+      "timeout": 0,
+      "redirect": ":443",
+      "userLevel": 0
+
+    },
+    "proxySettings": {
+      "tag": "xxx"
+    },
+    "mux": {}
+  }
+}
